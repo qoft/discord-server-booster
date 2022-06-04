@@ -1,4 +1,4 @@
-import requests, colorama; sub_ids = [], __guild_id__ = input("Guild ID: ")
+import requests, colorama; sub_ids = []; __guild_id__ = input("Guild ID: ")
 def log(text): print(text+f"{colorama.Fore.RESET}")
 def main():
     with open("tokens.txt", "r") as f:  tokens = f.read().splitlines()
