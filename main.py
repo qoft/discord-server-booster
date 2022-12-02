@@ -23,7 +23,7 @@ class Nitro:
             "x-super-properties": "eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRGlzY29yZCBDbGllbnQiLCJyZWxlYXNlX2NoYW5uZWwiOiJzdGFibGUiLCJjbGllbnRfdmVyc2lvbiI6IjEuMC45MDA3Iiwib3NfdmVyc2lvbiI6IjEwLjAuMTkwNDMiLCJvc19hcmNoIjoieDY0Iiwic3lzdGVtX2xvY2FsZSI6ImVuLVVTIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTYxODQyLCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ=="
         }
         self.session = tls_client.Session(client_identifier="chrome_107")
-        self.sub_ids = list()
+        self.sub_ids = []
 
     def removeTokenFromTxt(self):
         with open("tokens.txt", "r") as f:
@@ -39,9 +39,7 @@ class Nitro:
             headers=self.headers,
         )
         if sex.status_code in [403, 401]:
-            log(f"{colorama.Fore.RED}Token is invalid, removing.")
-            self.removeTokenFromTxt()
-            return False
+            return self._extracted_from_hasNitro_7('Token is invalid, removing.')
         try:
             for sub in sex.json():
                 self.sub_ids.append(sub["id"])
@@ -49,11 +47,15 @@ class Nitro:
             print(e)
             print(sex.text)
         if len(self.sub_ids) == 0:
-            log(f"{colorama.Fore.RED}Token has no nitro, removing.")
-            self.removeTokenFromTxt()
-            return False
+            return self._extracted_from_hasNitro_7('Token has no nitro, removing.')
         log(f"{colorama.Fore.GREEN}Token has nitro.")
         return True
+
+    # TODO Rename this here and in `hasNitro`
+    def _extracted_from_hasNitro_7(self, arg0):
+        log(f"{colorama.Fore.RED}{arg0}")
+        self.removeTokenFromTxt()
+        return False
 
     def boostServer(self, guildID):
         for i in range(len(self.sub_ids)):
@@ -78,7 +80,7 @@ class Nitro:
 
 
 def log(text):
-    print(text + f"{colorama.Fore.RESET}")
+    print(f"{text}{colorama.Fore.RESET}")
 
 
 def main():
