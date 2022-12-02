@@ -38,13 +38,16 @@ class Nitro:
             "https://discord.com/api/v9/users/@me/guilds/premium/subscription-slots",
             headers=self.headers,
         )
-        if sex.status_code == 403:
-            log(f"{colorama.Fore.RED}Token is locked.")
+        if sex.status_code in [403, 401]:
+            log(f"{colorama.Fore.RED}Token is invalid, removing.")
             self.removeTokenFromTxt()
             return False
-
-        for sub in sex.json():
-            self.sub_ids.append(sub["id"])
+        try:
+            for sub in sex.json():
+                self.sub_ids.append(sub["id"])
+        except Exception as e:
+            print(e)
+            print(sex.text)
         if len(self.sub_ids) == 0:
             log(f"{colorama.Fore.RED}Token has no nitro, removing.")
             self.removeTokenFromTxt()
@@ -89,3 +92,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    input("Press enter to exit.")
