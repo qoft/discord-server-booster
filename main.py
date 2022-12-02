@@ -46,7 +46,7 @@ class Nitro:
         for sub in sex.json():
             self.sub_ids.append(sub["id"])
         if len(self.sub_ids) == 0:
-            log(f"{colorama.Fore.RED}Token has no nitro.")
+            log(f"{colorama.Fore.RED}Token has no nitro, removing.")
             self.removeTokenFromTxt()
             return False
         log(f"{colorama.Fore.GREEN}Token has nitro.")
@@ -54,6 +54,7 @@ class Nitro:
 
     def boostServer(self, guildID):
         for i in range(len(self.sub_ids)):
+            self.headers["Content-Type"] = "application/json"
             r = self.session.put(
                 url=f"https://discord.com/api/v9/guilds/{guildID}/premium/subscriptions",
                 headers=self.headers,
