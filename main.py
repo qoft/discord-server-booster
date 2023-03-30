@@ -1,7 +1,11 @@
 import colorama, tls_client
 
 sub_ids = []
-__guild_id__ = input("Guild ID: ")
+session = tls_client.Session(client_identifier="chrome_107")
+invite = input("invite: ")
+req = session.get(f"https://discord.com/api/v9/invites/{invite}?with_counts=true&with_expiration=true").json()
+guildID = req["guild"]["id"]
+
 colorama.init(convert=True)
 
 
